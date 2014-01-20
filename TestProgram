@@ -1,0 +1,297 @@
+Option Explicit On
+Imports System.IO
+
+Module Module1
+    Dim NoOfUsers As Integer
+    Dim ExistingUsers As Integer
+    Dim NewUsers As Integer
+    Dim Filename, TextString As String
+    Dim CurrentFileWriter As StreamWriter
+    Dim CurrentFileReader As StreamReader
+    Dim Username(20) As String
+    Dim password(20) As String
+
+    Structure Usersinfo
+        Dim UsersName As String
+        Dim UsersDoB As String
+        Dim UsersAge As Integer
+        Dim UsersGender As String
+    End Structure
+    Dim Userinfo(20) As Usersinfo
+
+
+    Sub Main()
+        'test code with sections commented out to test the input of InitalData and Writing to files
+        'this again will be modified at later date.
+
+
+        ' WriteExistingUserData()
+        LoadInitialData()
+        LoginStart()
+
+
+    End Sub
+    Public Sub LoginStart()
+        ' this is all testing code will not be the final starting point of the program
+        ' will contain a case statement to see if your a new user wanting to register or register in bulk or 
+        'existing user wanting to login
+
+        Dim DataNeeded As String
+        Console.WriteLine(NoOfUsers)
+        Console.Write("Does data need to be input: ")
+        DataNeeded = Console.ReadLine()
+
+        If DataNeeded = "yes" Or DataNeeded = "Yes" Or DataNeeded = "Y" Or DataNeeded = "y" Then
+            'NoOfUser()
+            CollectUserinfo()
+            LoadData()
+        ElseIf DataNeeded = "no" Or DataNeeded = "No" Or DataNeeded = "n" Or DataNeeded = "N" Then
+            LoadData()
+            'testing locations and priorities
+            ' DisplayUsersinfo()
+            'Console.WriteLine("press enter to continue(testing location prioritys)")
+            Console.ReadLine()
+            'end of test data
+        End If
+        LoginScreen()
+
+        Console.ReadLine()
+    End Sub
+    Public Sub LoadInitialData()
+        'LoadInitialData() will load in a integer that contains the current amount of existng users(Refer to WriteExistingUserData()
+        ' for more information on why)
+
+        Dim filename As String
+        filename = "C:\Users\User\Desktop\TestProgData\NoOfUsers.txt"
+        CurrentFileReader = New StreamReader(filename)
+        Do Until CurrentFileReader.EndOfStream
+            ExistingUsers = CurrentFileReader.ReadLine()
+
+        Loop
+        CurrentFileReader.Close()
+        NoOfUsers = ExistingUsers
+        LoadData()
+
+
+
+    End Sub
+    Public Sub CollectUserinfo2()
+        'CollectUserInfo2() will be used to collect any new user data inputs(so previous user logins will not be wiped or modified.).
+        'It will used data loaded in from LoadInitalData() as the starting point value for the for loop with NoOfUsers, being the
+        'designated amount of new users to be entered.
+
+        Dim count As Integer = ExistingUsers
+
+
+        For count = CInt(ExistingUsers) To CInt(NoOfUsers)
+            Filename = "C:\Users\User\Desktop\TestProgData\user" & count & ".txt"
+            CurrentFileWriter = New StreamWriter(Filename)
+            Console.WriteLine("enter data for user: " & (count + 1))
+            Console.Write("Please enter your new username: ")
+            TextString = Console.ReadLine()
+            CurrentFileWriter.WriteLine(TextString)
+
+            Console.Write("please enter password to match account: ")
+            TextString = Console.ReadLine()
+            CurrentFileWriter.WriteLine(TextString)
+
+            Console.Write("please enter your full name: ")
+            TextString = Console.ReadLine()
+            CurrentFileWriter.WriteLine(TextString)
+
+            Console.Write("Please enter your date of birth(Format:00/00/0000): ")
+            TextString = Console.ReadLine()
+            CurrentFileWriter.WriteLine(TextString)
+
+            Console.Write("Please enter your Age: ")
+            TextString = Console.ReadLine()
+            CurrentFileWriter.WriteLine(TextString)
+
+            Console.Write("Please enter your gender: ")
+            TextString = Console.ReadLine()
+            CurrentFileWriter.WriteLine(TextString)
+            Console.Clear()
+            count = count + 1
+            CurrentFileWriter.Close()
+        Next
+        ExistingUsers = count
+        WriteExistingUserData()
+    End Sub
+    Public Sub WriteExistingUserData()
+        ' this write to file a integer to be loaded that contains the amount of Existing users, so that peoples account wont be wiped
+        ' this value will be used as the bound for a loop in CollectUserInfo2() 
+        ' which will modify the output file to create addition users
+
+        Dim filename As String
+        Dim TextString As String
+        filename = "C:\Users\User\Desktop\TestProgData\NoOfUsers.txt"
+        CurrentFileWriter = New StreamWriter(filename)
+        TextString = ExistingUsers
+        CurrentFileWriter.WriteLine(TextString)
+        CurrentFileWriter.Close()
+    End Sub
+    Public Sub NoOfUser()
+        'this will eventually be used for the bulk registering of users
+        Console.Write("Please enter the amount of new users you want to register: ")
+        NoOfUsers = Console.ReadLine()
+    End Sub
+    Public Sub CollectUserinfo()
+        'this code was used for my inital entering of bulk data to the Array(s) and structured array
+        Dim count As Integer = 0
+
+        Do Until count = CInt(NoOfUsers)
+            Filename = "C:\Users\User\Desktop\TestProgData\user" & count & ".txt"
+            CurrentFileWriter = New StreamWriter(Filename)
+            Console.WriteLine("enter data for user: " & (count + 1))
+            Console.Write("Please enter your new username: ")
+            TextString = Console.ReadLine()
+            CurrentFileWriter.WriteLine(TextString)
+
+            Console.Write("please enter password to match account: ")
+            TextString = Console.ReadLine()
+            CurrentFileWriter.WriteLine(TextString)
+
+            Console.Write("please enter your full name: ")
+            TextString = Console.ReadLine()
+            CurrentFileWriter.WriteLine(TextString)
+
+            Console.Write("Please enter your date of birth(Format:00/00/0000): ")
+            TextString = Console.ReadLine()
+            CurrentFileWriter.WriteLine(TextString)
+
+            Console.Write("Please enter your Age: ")
+            TextString = Console.ReadLine()
+            CurrentFileWriter.WriteLine(TextString)
+
+            Console.Write("Please enter your gender: ")
+            TextString = Console.ReadLine()
+            CurrentFileWriter.WriteLine(TextString)
+            Console.Clear()
+            count = count + 1
+            CurrentFileWriter.Close()
+        Loop
+        ExistingUsers = count
+        WriteExistingUserData()
+        'CurrentFileWriter.Close()
+        'need to implement the read for program to work again(reference the ReadWrite program for help on this )
+    End Sub
+    Public Sub LoadData()
+        'Filename will need to be modified dependant on computer its run on
+        '(this is a proof of concept code rather than published release version)
+        Dim Count As Integer = 0
+
+        Do Until Count = CInt(NoOfUsers)
+            Filename = "C:\Users\User\Desktop\TestProgData\user" & Count & ".txt"
+            CurrentFileReader = New StreamReader(Filename)
+            Username(Count) = CurrentFileReader.ReadLine()
+            password(Count) = CurrentFileReader.ReadLine()
+            Userinfo(Count).UsersName = CurrentFileReader.ReadLine()
+            Userinfo(Count).UsersDoB = CurrentFileReader.ReadLine()
+            Userinfo(Count).UsersAge = CurrentFileReader.ReadLine()
+            Userinfo(Count).UsersGender = CurrentFileReader.ReadLine()
+            Count = Count + 1
+            CurrentFileReader.Close()
+        Loop
+
+
+        'Do
+        '    Filename = "C:\Users\User\Desktop\TestProgData\user" & Count & ".txt"
+        '    CurrentFileReader = New StreamReader(Filename)
+        '    Username(Count) = CurrentFileReader.ReadLine()
+        '    password(Count) = CurrentFileReader.ReadLine()
+        '    Userinfo(Count).UsersName = CurrentFileReader.ReadLine()
+        '    Userinfo(Count).UsersDoB = CurrentFileReader.ReadLine()
+        '    Userinfo(Count).UsersAge = CurrentFileReader.ReadLine()
+        '    Userinfo(Count).UsersGender = CurrentFileReader.ReadLine()
+        '    Count = Count + 1
+        '    CurrentFileReader.Close()
+        'Loop Until Count = CInt(NoOfUsers)
+        'CurrentFileReader.Close()
+        Console.WriteLine("Data Loaded")
+    End Sub
+    Public Sub DisplayUsersinfo()
+        'For testing population of Array(s) and structured array
+        Dim count As Integer = 0
+
+        Do
+            Console.WriteLine("username " & count & ":" & Username(count))
+            Console.WriteLine("Password " & count & ":" & password(count))
+            Console.WriteLine("Users name " & count & ":" & Userinfo(count).UsersName)
+            Console.WriteLine("Users Age " & count & ":" & Userinfo(count).UsersAge)
+            Console.WriteLine("Users Gender " & count & ":" & Userinfo(count).UsersGender)
+            Console.WriteLine()
+            count = count + 1
+        Loop Until count = 4
+    End Sub
+    Public Sub LoginScreen()
+        ' this will collect the information need to be processed for the UserloginAuthentication()
+        ' it also passes its data to the sub routine for further processing
+        ' there will be another screen before this not sure on how to lay it out yet.
+        ' and also a log out section as well 
+
+        Dim username As String
+        Dim password As String
+        Console.Clear()
+        Console.Write("Please enter username: ")
+        username = Console.ReadLine
+        Console.Write("Please enter password: ")
+        password = Console.ReadLine
+        UserloginAuthentication(username, password)
+        Console.ReadLine()
+
+
+    End Sub
+    Public Sub UserloginAuthentication(ByRef user As String, ByRef Pass As String)
+        'this Compared the passed data to the data contained within the Array database, and only changes the variable correct to 1
+        'if the username and password of the same count value(same position in both arrays) match up with the data string passed to
+        'this procedure, it loops until it has checked the amount of users the system has or until it finds a match, and then
+        'diplays your account information
+
+        Dim correct As Integer = 0
+        Dim LoginAgain As Char
+        Dim CurrentUser As String = ""
+        For Count = 0 To CInt(NoOfUsers)
+            If user = Username(Count) And Pass = password(Count) Then
+                'gets the name found in the database and displays a personalised greeting
+                CurrentUser = Userinfo(Count).UsersName
+                Console.WriteLine("Welcome back " & CurrentUser)
+                Console.WriteLine("user information: Found")
+                Console.WriteLine("Date of birth:{0}", Userinfo(Count).UsersDoB)
+                Console.WriteLine("Age: " & Userinfo(Count).UsersAge)
+                Console.WriteLine("Gender: " & Userinfo(Count).UsersGender)
+                correct = 1
+            End If
+        Next
+        ' if user and pass have matched up with the username and password arrays it passes 1 to the correct varible which triggers
+        ' a progress message with limited functionality at this moment, to log in to another account if they have one
+        ' i have ideas for this at a later data, (i.e a game which requires you to collect clues to the login information so you can
+        ' get infomation on your target and find out where they will be.)
+        If correct = 1 Then
+            Console.WriteLine("To login to get account information for another account, please press Y or N")
+            LoginAgain = Console.ReadLine()
+            If LoginAgain = "Y" Or LoginAgain = "y" Then
+                Console.WriteLine("Thank you user {0}", CurrentUser)
+                Console.WriteLine("press enter to progress")
+                Console.ReadKey()
+                Console.Clear()
+                LoginScreen()
+                ' or you can log out and progress else where (in the game?)
+            ElseIf LoginAgain = "N" Or LoginAgain = "n" Then
+                Console.WriteLine("Thank you for using this service")
+                Console.WriteLine()
+                Console.WriteLine("Press enter to end program have a nice day")
+                Console.ReadLine()
+                End
+            End If
+            ' and if the correct value is not a 1 then you have not logged into an account therefore its assumed you have a wrong 
+            'username or password and advises you to try again
+        Else
+            Console.WriteLine()
+            Console.WriteLine("Sorry either your Username or password was incorrect.")
+            Console.WriteLine("please try again(press any key to continue)")
+            Console.ReadKey()
+            Console.Clear()
+            LoginScreen()
+        End If
+    End Sub
+End Module
