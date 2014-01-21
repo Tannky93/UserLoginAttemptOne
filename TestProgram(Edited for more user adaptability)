@@ -6,6 +6,14 @@ Module Module1
     Dim ExistingUsers As Integer = 0
     Dim NewUsers As Integer
     Dim Filename, TextString As String
+  Option Explicit On
+Imports System.IO
+
+Module Module1
+    Dim NoOfUsers As Integer
+    Dim ExistingUsers As Integer = 0
+    Dim NewUsers As Integer
+    Dim Filename, TextString As String
     Dim CurrentFileWriter As StreamWriter
     Dim CurrentFileReader As StreamReader
     Dim Username(20) As String
@@ -87,6 +95,7 @@ Module Module1
         Loop
         CurrentFileReader.Close()
         NoOfUsers = ExistingUsers
+        CreateAdminUser0()
         LoadData()
 
 
@@ -141,6 +150,32 @@ Module Module1
         'Loop Until Count = CInt(NoOfUsers)
         'CurrentFileReader.Close()
         Console.WriteLine("Data Loaded")
+    End Sub
+    Public Sub CreateAdminUser0()
+        'this code was used for my inital entering of bulk data to the Array(s) and structured array
+        Dim count As Integer = 0
+        Dim Savedirectory As String
+
+            Savedirectory = CStr(Filename + ("user0.txt"))
+            CurrentFileWriter = New StreamWriter(Savedirectory)
+            
+        TextString = "Admin"
+        CurrentFileWriter.WriteLine(TextString)
+        TextString = "Password"
+        CurrentFileWriter.WriteLine(TextString)
+        TextString = "Admin"
+        CurrentFileWriter.WriteLine(TextString)
+        TextString = "N/A"
+        CurrentFileWriter.WriteLine(TextString)
+        TextString = 0
+        CurrentFileWriter.WriteLine(TextString)
+        TextString = "N/A"
+        CurrentFileWriter.WriteLine(TextString)
+        CurrentFileWriter.Close()
+        ExistingUsers = 0
+        WriteExistingUserData()
+        'CurrentFileWriter.Close()
+        'need to implement the read for program to work again(reference the ReadWrite program for help on this )
     End Sub
     Public Sub LoginStart()
         ' this is all testing code will not be the final starting point of the program
