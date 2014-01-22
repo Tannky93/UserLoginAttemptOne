@@ -1,0 +1,49 @@
+Module Module1
+    Dim DriveLetter As Char = ""
+    Sub Main()
+        ' this i all test code in this section 
+        Dim TestVariable As Char
+        Console.Write("Press 1: ")
+        TestVariable = Console.ReadLine()
+        Console.WriteLine()
+        If TestVariable = "1" Then
+            GetDriveLetter()
+        End If
+
+        Console.WriteLine()
+
+        Console.Write("Press 2: ")
+        TestVariable = Console.ReadLine()
+        Console.WriteLine()
+        If TestVariable = "2" Then
+            GetDriveLetter()
+        End If
+        Console.ReadLine()
+
+    End Sub
+    Public Sub GetDriveLetter()
+
+        DriveLetter = ObtainCharOfDrive(DriveLetter)
+        Console.WriteLine()
+        Console.WriteLine("Drive letter is: " & DriveLetter)
+        Console.WriteLine()
+
+    End Sub
+    Public Function ObtainCharOfDrive(ByRef DriveName As Char) As Char
+        Dim Path As Char
+        Dim comparator1 As Char = ""
+        Dim comparator2 As Char = " "
+        If DriveName = comparator1 Or DriveName = comparator2 Then
+            Path = My.Application.GetEnvironmentVariable("TEMP")
+            'testing line below (delete of comment out when not needed)
+            Console.WriteLine("used My.Application.GetEnvironmentVariable(TEMP)")
+        Else
+            Path = DriveName
+            'testin code below(delete or comment out when not needed)
+            Console.WriteLine("Bypassed GetEnvironmentVariable. not needed on this pass through ")
+        End If
+
+        ObtainCharOfDrive = Path
+    End Function
+End Module
+
