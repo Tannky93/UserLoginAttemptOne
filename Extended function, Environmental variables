@@ -8,7 +8,7 @@ Module Module1
         Console.ReadLine()
     End Sub
     Public Sub TestProcedure()
-        EnvironmentExists()
+        CheckEnvironmentExists()
         Dim TestVariable As Char
         Console.Write("Press 1: ")
         TestVariable = Console.ReadLine()
@@ -45,7 +45,7 @@ Module Module1
 
         ObtainCharOfDrive = Path
     End Function
-    Public Sub EnvironmentExists()
+    Public Sub CheckEnvironmentExists()
         Dim EnvironmentPath As String
         Dim EnvName As String = "TEST"
         Dim EnvValue As String = FilePath
