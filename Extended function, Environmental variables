@@ -1,0 +1,63 @@
+Module Module1
+    Dim DriveLetter As Char = ""
+    Dim FilePath As String = "C:\Users\User\Desktop\Test2\" 'Change this folder location it will in final program de user set on first run 
+    'to work on your machine whilst in test phase this should be the only thing needed to be changed.
+    Sub Main()
+        ' this i all test code in this section 
+        TestProcedure()
+        Console.ReadLine()
+    End Sub
+    Public Sub TestProcedure()
+        EnvironmentExists()
+        Dim TestVariable As Char
+        Console.Write("Press 1: ")
+        TestVariable = Console.ReadLine()
+        Console.WriteLine()
+        If TestVariable = "1" Then
+            ObtainCharOfDrive(DriveLetter)
+        End If
+
+        Console.WriteLine()
+
+        Console.Write("Press 2: ")
+        TestVariable = Console.ReadLine()
+        Console.WriteLine()
+        If TestVariable = "2" Then
+            ObtainCharOfDrive(DriveLetter)
+        End If
+        Console.ReadLine()
+    End Sub
+    Public Function ObtainCharOfDrive(ByRef DriveName As Char) As Char
+        Dim Path As Char
+        Dim comparator1 As Char = ""
+        Dim comparator2 As Char = " "
+        If DriveName = comparator1 Or DriveName = comparator2 Then
+            Path = Environment.GetEnvironmentVariable("TEST", EnvironmentVariableTarget.User)
+            'testing line below (delete of comment out when not needed)
+            Console.WriteLine("used My.Application.GetEnvironmentVariable(TEMP)")
+            Console.WriteLine("Drive: " & Path)
+        Else
+            Path = DriveName
+            'testin code below(delete or comment out when not needed)
+            Console.WriteLine("Bypassed GetEnvironmentVariable. not needed on this pass through ")
+            Console.WriteLine("Drive: " & Path)
+        End If
+
+        ObtainCharOfDrive = Path
+    End Function
+    Public Sub EnvironmentExists()
+        Dim EnvironmentPath As String
+        Dim EnvName As String = "TEST"
+        Dim EnvValue As String = FilePath
+        If Environment.GetEnvironmentVariable(EnvName,EnvironmentVariableTarget.User) Is Nothing Then
+            Environment.SetEnvironmentVariable(EnvName, FilePath, EnvironmentVariableTarget.User)
+            Console.WriteLine("Environment Variable Created.")
+            EnvironmentPath = Environment.GetEnvironmentVariable(EnvName,EnvironmentVariableTarget.User)
+            Console.WriteLine(EnvironmentPath)
+        Else
+            EnvironmentPath = Environment.GetEnvironmentVariable(EnvName, EnvironmentVariableTarget.User)
+            Console.WriteLine("Environment Variable Already exists.")
+            Console.WriteLine(EnvironmentPath)
+        End If
+    End Sub
+End Module
